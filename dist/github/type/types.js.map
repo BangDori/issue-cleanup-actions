@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/github/type/types.ts"],
+  "sourcesContent": ["import { getOctokit } from \"@actions/github\";\n\nexport type Octokit = ReturnType<typeof getOctokit>;\n\nexport interface Issue {\n  number: number;\n  title: string;\n  user: {\n    login: string;\n  } | null;\n  labels?: Array<string | { name: string }>;\n}\n\nexport interface IssueClassification {\n  completed: Issue[];\n  inProgress: Issue[];\n  pending: Issue[];\n}\n\nexport interface RepoContext {\n  owner: string;\n  repo: string;\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;AAAA;AAAA;",
+  "names": []
+}

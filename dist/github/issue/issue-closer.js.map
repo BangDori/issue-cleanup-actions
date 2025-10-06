@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/github/issue/issue-closer.ts"],
+  "sourcesContent": ["import { Octokit, RepoContext, Issue } from \"../type/types\";\n\n/**\n * Close completed issues\n */\nexport async function closeCompletedIssues(\n  octokit: Octokit,\n  context: RepoContext,\n  issues: Issue[]\n): Promise<void> {\n  for (const issue of issues) {\n    await octokit.rest.issues.update({\n      owner: context.owner,\n      repo: context.repo,\n      issue_number: issue.number,\n      state: \"closed\",\n    });\n    console.log(`Closed issue #${issue.number}`);\n  }\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAKA,eAAsB,qBACpB,SACA,SACA,QACe;AACf,aAAW,SAAS,QAAQ;AAC1B,UAAM,QAAQ,KAAK,OAAO,OAAO;AAAA,MAC/B,OAAO,QAAQ;AAAA,MACf,MAAM,QAAQ;AAAA,MACd,cAAc,MAAM;AAAA,MACpB,OAAO;AAAA,IACT,CAAC;AACD,YAAQ,IAAI,iBAAiB,MAAM,MAAM,EAAE;AAAA,EAC7C;AACF;",
+  "names": []
+}
