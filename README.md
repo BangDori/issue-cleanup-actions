@@ -120,6 +120,23 @@ jobs:
 
 ## How It Works
 
+### Understanding PR Thresholds
+
+This action uses two separate thresholds to ensure quality issue completion:
+
+- **`min-linked-prs`**: Minimum number of PRs that reference the issue (any state: open, closed, or merged)
+- **`min-merged-prs`**: Minimum number of PRs that are actually merged
+
+**Why both?** This dual-threshold approach prevents premature issue closure and ensures meaningful completion criteria:
+
+- Issues with linked PRs but no merges → **In Progress**
+- Issues meeting both thresholds → **Completed** (auto-closed)
+
+**Configuration examples:**
+
+- `min-linked-prs: 1, min-merged-prs: 1` - Close when 1 PR is linked and merged (default, suitable for typical issues)
+- `min-linked-prs: 2, min-merged-prs: 2` - Require 2+ PRs (useful when AI tools like [claude-code-action](https://github.com/anthropics/claude-code-action) auto-create 1 reference PR during issue creation)
+
 ```mermaid
 flowchart TD
     Start([Action Start]) --> Scope{issue-scope}
