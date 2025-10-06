@@ -16,8 +16,8 @@ A GitHub Action to efficiently manage issues generated from AI-based issue creat
 | `github-token`          | GitHub token for API access                                                                                                            | Yes      | -          |
 | `issue-scope`           | Issue scope to process: `"target"` (specific authors) or `"all"` (all issues)                                                          | No       | `"target"` |
 | `target-issue-creators` | Issue author(s) to filter (comma-separated, e.g., `"github-actions[bot]"`, `"user1,user2"`). Required when `issue-scope` is `"target"` | No       | `""`       |
-| `min-linked-prs`        | Minimum number of linked PRs required                                                                                                  | No       | `"2"`      |
-| `min-merged-prs`        | Minimum number of merged PRs required                                                                                                  | No       | `"2"`      |
+| `min-linked-prs`        | Minimum number of linked PRs required                                                                                                  | No       | `"1"`      |
+| `min-merged-prs`        | Minimum number of merged PRs required                                                                                                  | No       | `"1"`      |
 | `target-labels`         | Issue label(s) to filter (comma-separated, e.g., `"bug"`, `"bug,auto"`)                                                                | No       | `""`       |
 
 ## Outputs

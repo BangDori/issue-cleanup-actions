@@ -24,8 +24,8 @@ export function parseInputs(): ActionInputs {
     .map((creator) => creator.trim())
     .filter((creator) => creator.length > 0);
 
-  const minLinkedPRs = parseInt(process.env.MIN_LINKED_PRS || "2", 10);
-  const minMergedPRs = parseInt(process.env.MIN_MERGED_PRS || "2", 10);
+  const minLinkedPRs = parseInt(process.env.MIN_LINKED_PRS || "1", 10);
+  const minMergedPRs = parseInt(process.env.MIN_MERGED_PRS || "1", 10);
 
   const targetLabelsInput = process.env.TARGET_LABELS || "";
   const targetLabels = targetLabelsInput
@@ -33,5 +33,12 @@ export function parseInputs(): ActionInputs {
     .map((label) => label.trim())
     .filter((label) => label.length > 0);
 
-  return { token, issueScope, targetIssueCreators, minLinkedPRs, minMergedPRs, targetLabels };
+  return {
+    token,
+    issueScope,
+    targetIssueCreators,
+    minLinkedPRs,
+    minMergedPRs,
+    targetLabels,
+  };
 }

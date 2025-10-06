@@ -19,11 +19,11 @@ inputs:
   min-linked-prs:
     description: "Minimum number of linked PRs required"
     required: false
-    default: "2"
+    default: "1"
   min-merged-prs:
     description: "Minimum number of merged PRs required"
     required: false
-    default: "2"
+    default: "1"
   target-labels:
     description: 'Target label(s) to process. Single label (e.g., "auto") or multiple labels separated by comma (e.g., "bug,enhancement"). Empty means no label filtering.'
     required: false
