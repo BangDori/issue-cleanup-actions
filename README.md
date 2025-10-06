@@ -46,9 +46,10 @@ jobs:
 
     permissions:
       issues: write
+      pull-requests: read
 
     steps:
-      - uses: bangdori/issue-cleanup-actions@v1
+      - uses: bangdori/issue-cleanup-actions@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-scope: target
@@ -71,9 +72,10 @@ jobs:
 
     permissions:
       issues: write
+      pull-requests: read
 
     steps:
-      - uses: bangdori/issue-cleanup-actions@v1
+      - uses: bangdori/issue-cleanup-actions@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-scope: all
@@ -95,9 +97,10 @@ jobs:
 
     permissions:
       issues: write
+      pull-requests: read
 
     steps:
-      - uses: bangdori/issue-cleanup-actions@v1
+      - uses: bangdori/issue-cleanup-actions@v1.1.0
         id: cleanup
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
