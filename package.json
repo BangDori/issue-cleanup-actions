@@ -1,5 +1,5 @@
 {
-  "name": "dev-author-issue-cleanup",
+  "name": "issue-cleanup-actions",
   "version": "1.0.0",
   "scripts": {
     "build": "node build.mjs",

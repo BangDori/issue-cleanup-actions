@@ -48,7 +48,7 @@ jobs:
       issues: write
 
     steps:
-      - uses: bangdori/dev-author-issue-cleanup@v1
+      - uses: bangdori/issue-cleanup-actions@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-scope: target
@@ -73,7 +73,7 @@ jobs:
       issues: write
 
     steps:
-      - uses: bangdori/dev-author-issue-cleanup@v1
+      - uses: bangdori/issue-cleanup-actions@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-scope: all
@@ -97,7 +97,7 @@ jobs:
       issues: write
 
     steps:
-      - uses: bangdori/dev-author-issue-cleanup@v1
+      - uses: bangdori/issue-cleanup-actions@v1
         id: cleanup
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
