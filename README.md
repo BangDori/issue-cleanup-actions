@@ -1,4 +1,4 @@
-# Dev Author Issue Cleanup
+# Issue Cleanup
 
 A GitHub Action to efficiently manage issues generated from AI-based issue creation, PRD document generation, and more. It automatically closes issues when their linked Pull Requests are merged, reducing issue management overhead.
 
