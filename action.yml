@@ -1,5 +1,8 @@
-name: "Dev Author Issue Cleanup"
+name: "Issue Cleanup"
 description: "Automatically closes issues created by specific authors when their linked PRs are merged"
+branding:
+  icon: "trash-2"
+  color: "black"
 
 inputs:
   github-token:
