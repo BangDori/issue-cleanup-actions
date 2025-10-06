@@ -179,4 +179,4 @@ flowchart TD
 
 ## License
 
-ISC
+MIT
