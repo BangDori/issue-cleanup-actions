@@ -1,0 +1,61 @@
+name: "Dev Author Issue Cleanup"
+description: "Automatically closes issues created by specific authors when their linked PRs are merged"
+
+inputs:
+  github-token:
+    description: "GitHub token for API access"
+    required: true
+  issue-scope:
+    description: 'Issue scope to process. "target" (default) processes only issues from target-issue-creators, "all" processes all issues regardless of creator.'
+    required: false
+    default: "target"
+  target-issue-creators:
+    description: 'Target issue creator(s) to filter. Single creator (e.g., "app/claude") or multiple creators separated by comma (e.g., "app/claude,user1,user2"). Only used when issue-scope is "target".'
+    required: false
+    default: ""
+  min-linked-prs:
+    description: "Minimum number of linked PRs required"
+    required: false
+    default: "2"
+  min-merged-prs:
+    description: "Minimum number of merged PRs required"
+    required: false
+    default: "2"
+  target-labels:
+    description: 'Target label(s) to process. Single label (e.g., "auto") or multiple labels separated by comma (e.g., "bug,enhancement"). Empty means no label filtering.'
+    required: false
+    default: ""
+
+outputs:
+  completed-count:
+    description: "Number of completed issues"
+    value: ${{ steps.cleanup.outputs.completed-count }}
+  in-progress-count:
+    description: "Number of issues in progress"
+    value: ${{ steps.cleanup.outputs.in-progress-count }}
+  pending-count:
+    description: "Number of pending issues"
+    value: ${{ steps.cleanup.outputs.pending-count }}
+  report:
+    description: "Generated report summary"
+    value: ${{ steps.cleanup.outputs.report }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22.7"
+
+    - name: Run issue cleanup
+      id: cleanup
+      shell: bash
+      run: node ${{ github.action_path }}/dist/index.js
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        ISSUE_SCOPE: ${{ inputs.issue-scope }}
+        TARGET_ISSUE_CREATORS: ${{ inputs.target-issue-creators }}
+        MIN_LINKED_PRS: ${{ inputs.min-linked-prs }}
+        MIN_MERGED_PRS: ${{ inputs.min-merged-prs }}
+        TARGET_LABELS: ${{ inputs.target-labels }}

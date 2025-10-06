@@ -1,0 +1,67 @@
+name: "[PUSH] Main commit after build"
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.7.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+
+      - name: 의존성 설치
+        shell: bash
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: 빌드 실행
+        run: pnpm build
+
+      - name: main 브랜치로 전환 및 develop 변경사항 병합
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 현재 변경사항을 임시로 stash
+          git stash push -m "Temporary stash for build artifacts"
+
+          # main 브랜치가 없으면 생성, 있으면 전환
+          git checkout -B main
+
+          # develop의 모든 커밋을 main으로 rebase 병합
+          git rebase develop
+
+          # stash된 빌드 결과물을 복원하고 커밋
+          git stash pop || echo "No stash to apply"
+          git add dist/
+          git commit -m "[AUTO] build" --no-verify || echo "No changes to commit"
+
+          # main 브랜치에 강제 푸시
+          git push origin main --force
+
+      - name: Trigger release workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'release.yml',
+              ref: 'main'
+            })

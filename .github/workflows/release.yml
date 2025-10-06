@@ -1,0 +1,59 @@
+name: "[RELEASE] Auto tagging"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  auto-tagging:
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: write
+      id-token: write
+      actions: write
+
+    steps:
+      - name: Create Tag And Release
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          release_branches: main
+          custom_release_rules: release:major,feat:minor,*:patch
+
+      - name: Get commit info
+        id: commit_info
+        run: |
+          # Get list of all tags sorted by version (excluding the just-created tag)
+          PREVIOUS_TAG=$(git tag --sort=-v:refname | grep -v "^${{ steps.tag_version.outputs.new_tag }}$" | head -n 1)
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # No previous tag, get all commits on main except [AUTO] build commit
+            COMMITS=$(git log --pretty=format:"- %s (@%an)" | grep -v "^\- \[AUTO\] build")
+          else
+            # Get commits between previous tag and HEAD, excluding [AUTO] build commit
+            COMMITS=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (@%an)" | grep -v "^\- \[AUTO\] build")
+          fi
+
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+            ## Changelog
+            ${{ steps.tag_version.outputs.changelog }}
+
+            ## Commits
+            ${{ steps.commit_info.outputs.commits }}

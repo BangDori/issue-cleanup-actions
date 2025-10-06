@@ -1,0 +1,7 @@
+.idea
+node_modules
+run-log/**
+.env
+output/
+.local-cache/
+.cache/
