@@ -1,6 +1,17 @@
 {
   "name": "issue-cleanup-actions",
   "version": "1.0.0",
+  "description": "A GitHub Action to efficiently manage issues by automatically closing them when their linked Pull Requests are merged",
+  "license": "MIT",
+  "author": "BangDori",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangdori/issue-cleanup-actions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangdori/issue-cleanup-actions/issues"
+  },
+  "homepage": "https://github.com/bangdori/issue-cleanup-actions#readme",
   "scripts": {
     "build": "node build.mjs",
     "dev": "tsx src/index.ts"
