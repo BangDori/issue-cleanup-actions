@@ -120,23 +120,6 @@ jobs:
 
 ## How It Works
 
-### Understanding PR Thresholds
-
-This action uses two separate thresholds to ensure quality issue completion:
-
-- **`min-linked-prs`**: Minimum number of PRs that reference the issue (any state: open, closed, or merged)
-- **`min-merged-prs`**: Minimum number of PRs that are actually merged
-
-**Why both?** This dual-threshold approach prevents premature issue closure and ensures meaningful completion criteria:
-
-- Issues with linked PRs but no merges → **In Progress**
-- Issues meeting both thresholds → **Completed** (auto-closed)
-
-**Configuration examples:**
-
-- `min-linked-prs: 1, min-merged-prs: 1` - Close when 1 PR is linked and merged (default, suitable for typical issues)
-- `min-linked-prs: 2, min-merged-prs: 2` - Require 2+ PRs (useful when AI tools like [claude-code-action](https://github.com/anthropics/claude-code-action) auto-create 1 reference PR during issue creation)
-
 ```mermaid
 flowchart TD
     Start([Action Start]) --> Scope{issue-scope}
@@ -175,6 +158,60 @@ flowchart TD
     style InProgress fill:#fff3cd
     style Pending fill:#f8d7da
     style Close fill:#d4edda
+```
+
+### Issue Classification Logic
+
+This action classifies issues into three states based on two thresholds (`min-linked-prs`, `min-merged-prs`) and PR body references:
+
+**Threshold Configuration:**
+
+- **`min-linked-prs`**: Minimum number of PRs that reference the issue (includes open, closed, and merged)
+- **`min-merged-prs`**: Minimum number of PRs that are actually merged
+
+**Configuration Examples:**
+
+- `min-linked-prs: 1, min-merged-prs: 1` - Close when 1 PR is linked and merged (default, suitable for typical issues)
+- `min-linked-prs: 2, min-merged-prs: 2` - Require 2+ PRs (useful when AI tools like [claude-code-action](https://github.com/anthropics/claude-code-action) auto-create 1 reference PR during issue creation)
+
+**Classification Criteria:**
+
+#### 1. **Pending**
+
+- Linked PRs < `min-linked-prs`
+- Not enough PRs reference the issue
+
+#### 2. **In Progress**
+
+- Linked PRs ≥ `min-linked-prs` AND Merged PRs < `min-merged-prs`
+- OR: Merged PRs ≥ `min-merged-prs` BUT no PR body explicitly references the issue
+
+#### 3. **Completed** (Auto-closed)
+
+- Linked PRs ≥ `min-linked-prs`
+- AND Merged PRs ≥ `min-merged-prs`
+- AND at least one merged PR body contains an explicit issue reference (e.g., `fixes #5`, `closes #10`)
+
+**Why Check PR Body References?**
+
+Even if PRs are merged, they might not actually fix the issue. For example, if an issue is only mentioned in PR comments, it appears in the timeline but may not indicate an intentional fix. This ensures:
+
+- PRs intentionally resolved the issue (not just incidentally linked)
+- Prevents auto-closing issues that still need work
+
+**Example:**
+
+```
+Issue #5: "Fix login bug"
+
+Scenario A - Will NOT close:
+✗ PR #10: "Refactor auth module" (merged, no #5 in body)
+✗ PR #11: "Update tests" (merged, no #5 in body)
+→ Status: In Progress (merged but not fixing this specific issue)
+
+Scenario B - Will close:
+✓ PR #10: "Fix login bug, closes #5" (merged, references #5)
+→ Status: Completed (explicitly fixes the issue)
 ```
 
 ## License
