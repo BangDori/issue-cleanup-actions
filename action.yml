@@ -25,7 +25,7 @@ inputs:
     required: false
     default: "1"
   target-labels:
-    description: 'Target label(s) to process. Single label (e.g., "auto") or multiple labels separated by comma (e.g., "bug,enhancement"). Empty means no label filtering.'
+    description: 'Target label(s) to process with OR logic. Single label (e.g., "auto") or multiple labels separated by comma (e.g., "bug,enhancement"). Issues with any of the specified labels will be processed. Empty means no label filtering.'
     required: false
     default: ""
 

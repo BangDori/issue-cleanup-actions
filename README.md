@@ -18,7 +18,7 @@ A GitHub Action to efficiently manage issues generated from AI-based issue creat
 | `target-issue-creators` | Issue author(s) to filter (comma-separated, e.g., `"github-actions[bot]"`, `"user1,user2"`). Required when `issue-scope` is `"target"` | No       | `""`       |
 | `min-linked-prs`        | Minimum number of linked PRs required                                                                                                  | No       | `"1"`      |
 | `min-merged-prs`        | Minimum number of merged PRs required                                                                                                  | No       | `"1"`      |
-| `target-labels`         | Issue label(s) to filter (comma-separated, e.g., `"bug"`, `"bug,auto"`)                                                                | No       | `""`       |
+| `target-labels`         | Issue label(s) to filter with OR logic (comma-separated, e.g., `"bug"`, `"bug,auto"`). Issues with **any** of the specified labels will be processed | No       | `""`       |
 
 ## Outputs
 
