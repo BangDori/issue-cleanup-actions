@@ -9,6 +9,12 @@ export function filterIssuesByLabels(
   issues: Issue[],
   targetLabels: string[]
 ): Issue[] {
+  // If no issues, return empty array
+  if (issues.length === 0) {
+    console.log("No issues to filter.");
+    return [];
+  }
+
   // If no labels specified, return all issues
   if (targetLabels.length === 0) {
     console.log("Skipping label filtering. Processing all issues.");
